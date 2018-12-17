@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D-IAT</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/black-tie/jquery-ui.min.css" rel="stylesheet" type="text/css"></link>
+  <script src="./jspsych.js"></script>
+  <script src="./plugins/jspsych-iat-html.js"></script>
+  <script src="./plugins/jspsych-html-keyboard-response.js"></script>
+  <script src="./additional-functions.js"></script>
+  <script src="./senarios/senario1.js"></script>
+  <script src="./senarios/senario2.js"></script>
+  <script src="./senarios/senario3.js"></script>
+  <script src="./senarios/senario4.js"></script>
+  <link href="./css/index.css" rel="stylesheet"></link>
+</head>
+<body>
+</body>
+<script>
+
+$(document).ready(function(){ 
+
+var subn = jsPsych.data.getURLVariable('subn'); //Gets subject number from Qualtrics URL
+
+var timeline = [];
+
+var welcome_block = {
+  type: 'html-keyboard-response',
+  stimulus: '<p>Welcome!<br><br> In this study you will ' +
+  'complete an Implicit Association Test (IAT) in which you ' +
+  'will be asked to sort words into groups as ' +
+  'fast as you can.</p><p>Press any key to begin.</p>',
+  post_trial_gap: 500
+};
+timeline.push(welcome_block);
+
+var category_block = {
+  type: 'html-keyboard-response',
+  stimulus: "<p>In this task, you will be presented with words to classify into categories " +
+  "using two computer keys, <strong>E</strong> and <strong>I</strong>. " +
+  "It requires you to go as quickly as you can while making as few mistakes as possible. " +
+  "Going too slow or making too many mistakes will result in an uninterpretable score. " +
+  "These are the possible target categories and the words that belong with each: <br><br>" +
+  "<table style='width:50%'>" +
+  "<tr><th><strong>Category</strong></th><th><strong>Words</strong></th></tr>" +
+  "<tr><td>Life</td><td>Living, Breathing, Thrive, Alive</td></tr>" +
+  "<tr><td>Death</td><td>Deceased, Suicide, Dead, Die</td></tr>" +
+  "<tr><td>Me</td><td>I, Myself, Mine, Self</td></tr>" +
+  "<tr><td>Not Me</td><td>Them, Other, They, Their</td></tr>" +
+  "</table>" +
+  "<br><br>In each round of the task, two of the categories will be designated as target categories. " +
+  "When you see a word from a currently targeted category, press the indicated key (for example, <strong>I</strong>) as quickly as possible. " +
+  "When you see a word that does NOT belong in a currently targeted category, press the other key (for example, <strong>E</strong>). " +
+  "Press any key to continue.</p>",
+  post_trial_gap: 500
+};
+timeline.push(category_block);
+
+const SCENARIO = Math.floor(Math.random() * 4)+1 //randomly assigns a one of four senarios (see doc for senario info)
+
+  if (SCENARIO === 1) {
+    timeline.push(sen1_block1_instructions);
+    timeline.push(sen1_block1);
+    timeline.push(sen1_block2_instructions);
+    timeline.push(sen1_block2);
+    timeline.push(sen1_block3_instructions);
+    timeline.push(sen1_block3);
+    timeline.push(sen1_block4_instructions);
+    timeline.push(sen1_block4);
+    timeline.push(sen1_block5_instructions);
+    timeline.push(sen1_block5);
+    timeline.push(sen1_block6_instructions);
+    timeline.push(sen1_block6);
+    timeline.push(sen1_block7_instructions);
+    timeline.push(sen1_block7);
+  };
+
+  if (SCENARIO === 2) {
+    timeline.push(sen2_block1_instructions);
+    timeline.push(sen2_block1);
+    timeline.push(sen2_block2_instructions);
+    timeline.push(sen2_block2);
+    timeline.push(sen2_block3_instructions);
+    timeline.push(sen2_block3);
+    timeline.push(sen2_block4_instructions);
+    timeline.push(sen2_block4);
+    timeline.push(sen2_block5_instructions);
+    timeline.push(sen2_block5);
+    timeline.push(sen2_block6_instructions);
+    timeline.push(sen2_block6);
+    timeline.push(sen2_block7_instructions);
+    timeline.push(sen2_block7);
+  };
+
+  if (SCENARIO === 3) {
+    timeline.push(sen3_block1_instructions);
+    timeline.push(sen3_block1);
+    timeline.push(sen3_block2_instructions);
+    timeline.push(sen3_block2);
+    timeline.push(sen3_block3_instructions);
+    timeline.push(sen3_block3);
+    timeline.push(sen3_block4_instructions);
+    timeline.push(sen3_block4);
+    timeline.push(sen3_block5_instructions);
+    timeline.push(sen3_block5);
+    timeline.push(sen3_block6_instructions);
+    timeline.push(sen3_block6);
+    timeline.push(sen3_block7_instructions);
+    timeline.push(sen3_block7);
+  };
+
+  if (SCENARIO === 4) {
+    timeline.push(sen4_block1_instructions);
+    timeline.push(sen4_block1);
+    timeline.push(sen4_block2_instructions);
+    timeline.push(sen4_block2);
+    timeline.push(sen4_block3_instructions);
+    timeline.push(sen4_block3);
+    timeline.push(sen4_block4_instructions);
+    timeline.push(sen4_block4);
+    timeline.push(sen4_block5_instructions);
+    timeline.push(sen4_block5);
+    timeline.push(sen4_block6_instructions);
+    timeline.push(sen4_block6);
+    timeline.push(sen4_block7_instructions);
+    timeline.push(sen4_block7);
+  };
+
+//Conclusion block
+var debrief_block = {
+  type: 'html-keyboard-response',
+  stimulus: "<p>Thank you for participating! <br><br> Please press any key to continue to the survey. </p>",
+};
+
+timeline.push(debrief_block);
+
+//Function to save data
+
+var qualtricsLink = "https://harvard.az1.qualtrics.com/jfe/form/SV_1TwBTGMwdkvSaTH?subn=" 
+
+function saveData(filename, filedata){
+  $.ajax({
+  type:'post',
+  cache: false,
+  url: 'save_data.php', //Path to PHP script
+  data: {filename: filename, filedata: filedata},
+  complete: function() {
+    window.location.href = qualtricsLink; 
+    }
+  });
+}
+
+jsPsych.init({
+  timeline: timeline,
+  on_finish: function() {
+    jsPsych.data.addProperties({subn: subn});
+    var start_time = jsPsych.startTime();
+    var total_time = jsPsych.totalTime();
+    jsPsych.data.addProperties({startTime: start_time});
+    jsPsych.data.addProperties({totalTime: total_time});
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + "_" + today.getMinutes() + "_" + today.getSeconds();
+    var dateTime = date+' '+time;
+    saveData(subn + '_' + dateTime + '_' + "_dbiatdesktop_data.csv", jsPsych.data.get().csv());;
+    }
+});
+});
+
+  </script>
+  </html>
